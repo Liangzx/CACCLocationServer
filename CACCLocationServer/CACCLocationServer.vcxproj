@@ -148,6 +148,7 @@
     <ClCompile Include="cacc_location_server.cpp" />
     <ClCompile Include="cacc_location_session.cpp" />
     <ClCompile Include="cacc_location_session_nmea.cpp" />
+    <ClCompile Include="fun_ts.cpp" />
     <ClCompile Include="json_test.cpp" />
   </ItemGroup>
   <ItemGroup>

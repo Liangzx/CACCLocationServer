@@ -13,10 +13,15 @@ class CACCLocationSessionNMEA : public CACCLocationSession,
 	public std::enable_shared_from_this<CACCLocationSessionNMEA>
 {
 public:
-	CACCLocationSessionNMEA(tcp::socket  socket);
+	CACCLocationSessionNMEA(tcp::socket  socket, CACCLocationServer * server);
 	~CACCLocationSessionNMEA();
-	virtual void init(std::shared_ptr<CACCLocationServer> ser_ptr);
+	virtual void init(std::shared_ptr<CACCLocationServer>  ser_ptr);
 	virtual void start();
+	enum connect_type
+	{
+		persistent_connection,
+		short_connection
+	}connect_type_;
 private:
 	void do_read();
 	void do_write(std::size_t length);
@@ -25,7 +30,9 @@ private:
 	data_arry data_;
 	//stream_type data_;
 	std::shared_ptr<CACCLocationServer> ser_ptr_;
+	// 队列满了是否等待
 	bool wait_flag_;
+	// 长/短连接
 	tcp::socket socket_;
 };
 #endif // !_CACC_LOCATION_SESSION_NMEA_H_

@@ -30,7 +30,8 @@ void CACCLocationServer::do_accept()
 		if (!ec)
 		{
 			// TODO:
-			std::shared_ptr<CACCLocationSession> session_ptr(std::make_shared<CACCLocationSessionNMEA>(std::move(socket_)));
+			std::shared_ptr<CACCLocationSession> session_ptr(std::make_shared<CACCLocationSessionNMEA>(std::move(socket_),
+				this));
 			session_ptr->init(self);
 			session_ptr->start();
 		}

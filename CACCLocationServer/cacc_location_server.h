@@ -16,7 +16,7 @@ public:
 	bool pop(msg & m)
 	{
 		if (lck_free_queue_.pop(m))
-		{
+		{			
 			--que_size_;
 			return true;
 		}

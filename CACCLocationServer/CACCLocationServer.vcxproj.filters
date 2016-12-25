@@ -30,6 +30,9 @@
     <ClCompile Include="json_test.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="fun_ts.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cacc_location_server.h">
