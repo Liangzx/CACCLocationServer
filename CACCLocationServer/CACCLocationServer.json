@@ -22,7 +22,7 @@
     "redis_ip": "127.0.0.1",
     "redis_port": 96611,
     "redis_buf_queue": "fuck",
-    "port": 10086,
+    "port": 10087,
     "running_flag": false
   }
 }

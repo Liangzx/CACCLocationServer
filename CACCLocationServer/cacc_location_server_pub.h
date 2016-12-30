@@ -10,6 +10,7 @@
 #include <boost/lexical_cast.hpp>
 #include <memory>
 #include <thread>
+#include <string>
 #include "json/include/rapidjson/prettywriter.h" // for stringify JSON
 #include "json/include/rapidjson/document.h"
 #include "json/include/rapidjson/pointer.h"
@@ -27,16 +28,20 @@ struct msg {
 	char *msg_;
 };
 
-class RecvPkg {
-public:
+struct RecvPkg {
+	int		satnum_;
+	int		posstat_;				// 解状态
+	int		rssi_;					// 信号强度
+	int		lac_;					// 小区Lac
+	int		ci_;					// 小区Cell
 	double	latitude_;				// 纬度
 	double	longitude_;				// 经度
 	double	altitude_;				// 海拔
 	double	north_;					// 北坐标
 	double	east_;					// 东坐标
 	double	height_;				// 高程
-	int		satnum_;
-	int		posstat_;				// 解状态
+	double  local_x_;				// 相对基站位置x
+	double	local_y_;				// 相对基站位置y
 	double	dpop_;
 	double	hrms_;
 	double	vrms_;
@@ -64,6 +69,9 @@ public:
 		direction_ = 0.0;
 		time_stamp_ = "";
 		object_id_ = "";
+		rssi_ = 0;
+		lac_ = 0;
+		ci_ = 0;
 	}
 
 	template<typename Writer>
@@ -120,6 +128,9 @@ public:
 };
 
 typedef boost::lockfree::queue<msg> lck_free_queue;
+std::size_t const arry_size = 1024;
+typedef std::array<char, arry_size> data_arry;
+typedef boost::asio::streambuf stream_type;
 
 #endif // !_CACC_LOCATION_SERVER_PUB_H_
 

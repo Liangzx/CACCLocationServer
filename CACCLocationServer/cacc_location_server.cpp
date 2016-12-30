@@ -1,5 +1,6 @@
 #include "cacc_location_server.h"
 #include "cacc_location_session_nmea.h"
+#include "cacc_location_session_app.h"
 
 
 CACCLocationServer::CACCLocationServer(boost::asio::io_service & io_service,
@@ -36,11 +37,11 @@ void CACCLocationServer::do_accept()
 			}
 			else if(config_->packeage_type_ == boost::to_lower_copy(std::string("app")))
 			{
-				session_ptr = (std::make_shared<CACCLocationSessionNMEA>(std::move(socket_),
+				session_ptr = (std::make_shared<CACCLocationSessionApp>(std::move(socket_),
 					this));
 			}
 			assert(session_ptr != nullptr);
-			session_ptr->init(self);
+			session_ptr->init(std::move(self));
 			session_ptr->start();
 		}
 		do_accept();

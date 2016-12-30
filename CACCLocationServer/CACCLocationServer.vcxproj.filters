@@ -36,6 +36,9 @@
     <ClCompile Include="cacc_location_config.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="cacc_location_session_app.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cacc_location_server.h">
@@ -54,6 +57,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="spin_mutex.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="cacc_location_session_app.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

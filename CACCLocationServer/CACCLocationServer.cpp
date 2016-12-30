@@ -13,13 +13,14 @@ std::queue<std::string> que;
 
 typedef std::chrono::time_point<std::chrono::high_resolution_clock> re_time_point;
 
-//void push_json_que(std::string json_str)
-//{
-//	std::lock_guard<spin_mutex> lock(sm);
-//	que.emplace(json_str);
-//	std::cout << "mq push size:" << que.size() << std::endl;
-//}
-//
+void push_json_que(std::string json_str)
+{
+	std::lock_guard<spin_mutex> lock(sm);
+	// TODO:push msg to rabbit mq
+	que.emplace(json_str);
+	std::cout << "mq push size:" << que.size() << std::endl;
+}
+
 //void pop_json_que(std::string & json_str)
 //{
 //	std::lock_guard<spin_mutex> lock(sm);
@@ -45,9 +46,10 @@ void pkg_json_task(std::shared_ptr<CACCLocationServer> && server_ptr)
 			{
 				continue;
 			}
-			std::cout << json_res << std::endl;
-			//std::cout << "lck free:" <<server_ptr->size() << std::endl;
-			// TODO: push mq queue
+			//std::cout << json_res << std::endl;
+			//std::cout <<server_ptr->size() << std::endl;
+			//TODO: push mq queue
+			push_json_que(json_res);
 		}
 		else
 		{
