@@ -144,6 +144,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="cacc_location_config.cpp" />
     <ClCompile Include="CACCLocationServer.cpp" />
     <ClCompile Include="cacc_location_server.cpp" />
     <ClCompile Include="cacc_location_session.cpp" />
@@ -152,12 +153,22 @@
     <ClCompile Include="json_test.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="cacc_location_config.h" />
     <ClInclude Include="cacc_location_server.h" />
     <ClInclude Include="cacc_location_server_pub.h" />
     <ClInclude Include="cacc_location_session.h" />
     <ClInclude Include="cacc_location_session_nmea.h" />
+    <ClInclude Include="spin_mutex.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="CACCLocationServer.json" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties CACCLocationServer_1json__JSONSchema="http://json.schemastore.org/docfx" />
+    </VisualStudio>
+  </ProjectExtensions>
 </Project>

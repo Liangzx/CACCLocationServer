@@ -12,7 +12,7 @@ public:
 	CACCLocationServer(boost::asio::io_service & io_service,
 		tcp::endpoint const & endpoint, std::size_t que_buf);
 	~CACCLocationServer();
-	void start(std::string packeage_type);
+	void start();
 	bool pop(msg & m)
 	{
 		if (lck_free_queue_.pop(m))
@@ -48,10 +48,11 @@ public:
 		return capacity_;
 	}
 
-	std::function<std::string(std::string)> parse;
+	std::function<std::string(std::string)> format;
+	std::shared_ptr<CACCLocationConfig> config_;
+	void set_config(std::shared_ptr<CACCLocationConfig> && cfg);
 private:
-	void do_accept();
-
+	void do_accept();	
 	tcp::socket socket_;
 	tcp::acceptor acceptor_;
 	lck_free_queue lck_free_queue_;

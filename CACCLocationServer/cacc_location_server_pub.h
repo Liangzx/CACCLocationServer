@@ -12,6 +12,8 @@
 #include <thread>
 #include "json/include/rapidjson/prettywriter.h" // for stringify JSON
 #include "json/include/rapidjson/document.h"
+#include "json/include/rapidjson/pointer.h"
+#include "cacc_location_config.h"
 
 using namespace std;
 using namespace rapidjson;
@@ -69,13 +71,15 @@ public:
 	{
 		writer.StartObject();
 
-		writer.String("object_id");
+		//writer.String("object_id");
+		writer.String("userId");
 #if RAPIDJSON_HAS_STDSTRING
 		writer.String(object_id_);
 #else
 		writer.String(object_id_.c_str(), static_cast<SizeType>(object_id_.length()));
 #endif
-		writer.String("time_stamp");
+		//writer.String("time_stamp");
+		writer.String("recordTime");
 #if RAPIDJSON_HAS_STDSTRING
 		writer.String(time_stamp_);
 #else
@@ -85,26 +89,27 @@ public:
 		writer.Double(latitude_);
 		writer.String("longitude");
 		writer.Double(longitude_);
-		writer.String("altitude");
+		//writer.String("altitude");
+		writer.String("elevation");
 		writer.Double(altitude_);
-		writer.String("north");
-		writer.Double(north_);
-		writer.String("east");
-		writer.Double(east_);
-		writer.String("height");
-		writer.Double(height_);
-		writer.String("satnum");
-		writer.Int(satnum_);
-		writer.String("posstat");
-		writer.Int(posstat_);
-		writer.String("dpop");
-		writer.Double(dpop_);
-		writer.String("hrms");
-		writer.Double(hrms_);
-		writer.String("vrms");
-		writer.Double(vrms_);
-		writer.String("age");
-		writer.Double(age_);
+		//writer.String("north");
+		//writer.Double(north_);
+		//writer.String("east");
+		//writer.Double(east_);
+		//writer.String("height");
+		//writer.Double(height_);
+		//writer.String("satnum");
+		//writer.Int(satnum_);
+		//writer.String("posstat");
+		//writer.Int(posstat_);
+		//writer.String("dpop");
+		//writer.Double(dpop_);
+		//writer.String("hrms");
+		//writer.Double(hrms_);
+		//writer.String("vrms");
+		//writer.Double(vrms_);
+		//writer.String("age");
+		//writer.Double(age_);
 		writer.String("speed");
 		writer.Double(speed_);
 		writer.String("diretion");

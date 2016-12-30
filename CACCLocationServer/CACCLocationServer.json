@@ -1,0 +1,28 @@
+{
+  "nema": {
+    "app_name": "CACCLocationServer",
+    "connect_type": "persistent_connection",
+    "mq_constr": "adfddf",
+    "mq_queue": "xxx",
+    "queue_size": 4096,
+    "if_wait": false,
+    "redis_ip": "127.0.0.1",
+    "redis_port": 96611,
+    "redis_buf_queue": "fuck",
+    "port": 10086,
+    "running_flag": false
+  },
+  "app": {
+    "app_name": "CACCLocationServer",
+    "connect_type": "persistent_connection",
+    "mq_constr": "adfddf",
+    "mq_queue": "xxx",
+    "queue_size": 4096,
+    "if_wait": false,
+    "redis_ip": "127.0.0.1",
+    "redis_port": 96611,
+    "redis_buf_queue": "fuck",
+    "port": 10086,
+    "running_flag": false
+  }
+}
