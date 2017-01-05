@@ -14,7 +14,7 @@ public:
 	~CACCLocationSessionNMEA();
 	virtual void do_write(std::size_t length);
 private:
-	std::string std::string do_format(std::string && str);
+	std::string do_format(std::string && str);
 };
 #endif // !_CACC_LOCATION_SESSION_NMEA_H_
 
