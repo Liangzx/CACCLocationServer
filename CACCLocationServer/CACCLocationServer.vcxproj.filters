@@ -39,6 +39,24 @@
     <ClCompile Include="cacc_location_session_app.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="AMQPBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AMQPException.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AMQPExchange.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AMQPMessage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AMQPQueue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AMQP.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="cacc_location_server.h">
@@ -62,8 +80,14 @@
     <ClInclude Include="cacc_location_session_app.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="AMQPcpp.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="CACCLocationServer.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="makefile" />
   </ItemGroup>
 </Project>

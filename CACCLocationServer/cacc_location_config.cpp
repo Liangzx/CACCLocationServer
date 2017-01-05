@@ -14,7 +14,8 @@ bool CACCLocationConfig::load_config()
 {
 	try
 	{
-		char const * path = "C:/Users/able_/Desktop/CACCLocationServer/CACCLocationServer/CACCLocationServer/CACCLocationServer.json";
+		//char const * path = "C:/Users/able_/Desktop/CACCLocationServer/CACCLocationServer/CACCLocationServer/CACCLocationServer.json";
+		char const * path = "/data/cxx/config/CACCLocationServer.json";
 
 		std::ifstream ifs(path);
 		IStreamWrapper isw(ifs);
@@ -33,18 +34,22 @@ bool CACCLocationConfig::load_config()
 		assert(cfg_.mq_constr_ != "");
 		cfg_.mq_queue_ = get_cfg_str_par("mq_queue", "");
 		assert(cfg_.mq_queue_ != "");
-		cfg_.redis_ip_ = get_cfg_str_par("redis_ip", "");
-		assert(cfg_.redis_ip_ != "");
-		cfg_.redis_port_ = get_cfg_int_par("redis_port", 12345);
-		cfg_.redis_buf_queue_ = get_cfg_str_par("redis_buf_queue", "");
-		assert(cfg_.redis_buf_queue_ != "");
+		cfg_.mq_exchange_ = get_cfg_str_par("mq_exchange", "");
+		assert(cfg_.mq_exchange_ != "");
+		cfg_.mq_type_ = get_cfg_str_par("mq_type", "");
+		assert(cfg_.mq_type_ != "");
+		//cfg_.redis_ip_ = get_cfg_str_par("redis_ip", "");
+		//assert(cfg_.redis_ip_ != "");
+		//cfg_.redis_port_ = get_cfg_int_par("redis_port", 12345);
+		//cfg_.redis_buf_queue_ = get_cfg_str_par("redis_buf_queue", "");
+		//assert(cfg_.redis_buf_queue_ != "");
 		cfg_.port_ = get_cfg_int_par("port", 12277);
 		
 		return true;
 	}
 	catch (const std::exception & e)
 	{
-		printf_s("%s:%s\n", __FUNCTION__,e.what());
+		printf("%s:%s\n", __FUNCTION__,e.what());
 		return false;
 	}	
 }

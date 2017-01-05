@@ -2,27 +2,25 @@
   "nema": {
     "app_name": "CACCLocationServer",
     "connect_type": "persistent_connection",
-    "mq_constr": "adfddf",
-    "mq_queue": "xxx",
+    "mq_constr": "gis:111111@172.18.57.208:5673//acdm",
+    "mq_queue": "Q_gis_CTU_LOCGIS_Position_Data",
+    "mq_exchange": "exchange_gis",
+    "mq_type": "topic",
     "queue_size": 4096,
     "if_wait": false,
-    "redis_ip": "127.0.0.1",
-    "redis_port": 96611,
-    "redis_buf_queue": "fuck",
-    "port": 10086,
+    "port": 12277,
     "running_flag": false
   },
   "app": {
     "app_name": "CACCLocationServer",
     "connect_type": "persistent_connection",
     "mq_constr": "adfddf",
-    "mq_queue": "xxx",
+    "mq_queue": "CTU_LOCGIS_Position_Data",
+    "mq_exchange": "exchange_gis",
+    "mq_type": "topic",
     "queue_size": 4096,
     "if_wait": false,
-    "redis_ip": "127.0.0.1",
-    "redis_port": 96611,
-    "redis_buf_queue": "fuck",
-    "port": 10087,
+    "port": 12278,
     "running_flag": false
   }
 }

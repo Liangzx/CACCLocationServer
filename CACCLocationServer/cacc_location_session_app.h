@@ -10,6 +10,7 @@ class CACCLocationSessionApp
 public:
 	CACCLocationSessionApp(tcp::socket  socket, CACCLocationServer * server);
 	~CACCLocationSessionApp();
+	virtual void do_write(std::size_t length);
 private:
 	static std::string do_format(std::string && str);
 };

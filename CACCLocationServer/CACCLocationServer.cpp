@@ -6,10 +6,12 @@
 #include "cacc_location_server.h"
 #include "cacc_location_config.h"
 #include "spin_mutex.hpp"
+#include "AMQPcpp.h"
 
 //queue for ma
 spin_mutex sm;
 std::queue<std::string> que;
+//
 
 typedef std::chrono::time_point<std::chrono::high_resolution_clock> re_time_point;
 
@@ -17,7 +19,7 @@ void push_json_que(std::string json_str)
 {
 	std::lock_guard<spin_mutex> lock(sm);
 	// TODO:push msg to rabbit mq
-	que.emplace(json_str);
+	//que.emplace(json_str);
 	std::cout << "mq push size:" << que.size() << std::endl;
 }
 
@@ -31,6 +33,35 @@ void push_json_que(std::string json_str)
 
 void pkg_json_task(std::shared_ptr<CACCLocationServer> && server_ptr)
 {
+	// connect amqp
+	std::string conn = server_ptr->config_->cfg_.mq_constr_;
+	std::string que_name = server_ptr->config_->cfg_.mq_queue_;
+	std::string que_exchange = server_ptr->config_->cfg_.mq_exchange_;
+	std::string que_type = server_ptr->config_->cfg_.mq_type_;
+	std::cout << "send msg connect server begin..." << std::endl;
+	//string conn = "cls:111111@172.18.57.208:5673//acdm";
+	AMQP amqp_produce;
+	AMQPQueue * que;
+	AMQPExchange * ex;
+	try
+	{
+		amqp_produce.ConnectToServer(conn);
+		//
+		std::cout << "send msg connect server success..." << std::endl;
+
+		ex = amqp_produce.createExchange(que_exchange);
+
+		ex->Declare(que_exchange, que_type, AMQP_DURABLE);
+		que = amqp_produce.createQueue(que_name);
+		que->Declare(que_name, AMQP_DURABLE);
+		que->Bind(que_exchange, "CTU_LOCGIS_Position_Data");
+	}
+	catch (const AMQPException&e)
+	{
+		std::cout << e.getMessage() << std::endl;
+		return;
+	}	
+	std::thread::id tid = std::this_thread::get_id();
 	while (true)
 	{
 		msg m;
@@ -46,10 +77,17 @@ void pkg_json_task(std::shared_ptr<CACCLocationServer> && server_ptr)
 			{
 				continue;
 			}
-			//std::cout << json_res << std::endl;
 			//std::cout <<server_ptr->size() << std::endl;
 			//TODO: push mq queue
-			push_json_que(json_res);
+			//push_json_que(json_res);
+
+			std::lock_guard<spin_mutex> lck(sm);
+			std::cout << "[" << tid << "]:" << json_res << std::endl;
+
+			ex->setHeader("Delivery-mode", 2);
+			ex->setHeader("Content-type", "text/json");
+			ex->setHeader("Content-encoding", "UTF-8");
+			ex->Publish(json_res, "CTU_LOCGIS_Position_Data");
 		}
 		else
 		{

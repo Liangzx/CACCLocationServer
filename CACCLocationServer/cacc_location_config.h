@@ -17,10 +17,14 @@ struct ConfigInfo
 	std::string app_name_;
 	// 连接类型
 	std::string connect_type_;
-	// mq连接串
+	// mq 连接串
 	std::string mq_constr_;
 	// mq name
 	std::string mq_queue_;
+	// mq exchange
+	std::string mq_exchange_;
+	// mq type[direct/topic/fanout]
+	std::string mq_type_;
 	// redis ip
 	std::string redis_ip_;
 	// redis port

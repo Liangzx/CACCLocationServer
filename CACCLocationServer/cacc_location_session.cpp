@@ -54,7 +54,7 @@ void CACCLocationSession::do_read()
 				{
 					do_wait();
 				}
-				do_read();
+				do_write(bytes_transferred);
 			}
 		});
 	}

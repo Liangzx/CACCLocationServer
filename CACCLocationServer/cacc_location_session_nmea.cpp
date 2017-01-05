@@ -11,6 +11,11 @@ CACCLocationSessionNMEA::~CACCLocationSessionNMEA()
 {
 }
 
+void CACCLocationSessionNMEA::do_write(std::size_t length)
+{
+	do_read();
+}
+
 std::string CACCLocationSessionNMEA::do_format(std::string && str)
 {
 	std::string buf = str;

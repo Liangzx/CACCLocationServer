@@ -12,7 +12,7 @@ class CACCLocationSessionNMEA : public CACCLocationSession
 public:
 	CACCLocationSessionNMEA(tcp::socket  socket, CACCLocationServer * server);
 	~CACCLocationSessionNMEA();
-
+	virtual void do_write(std::size_t length);
 private:
 	static std::string do_format(std::string && str);
 };

@@ -10,6 +10,21 @@ CACCLocationSessionApp::~CACCLocationSessionApp()
 {
 }
 
+void CACCLocationSessionApp::do_write(std::size_t length)
+{
+	auto self(shared_from_this());
+	// TODO:ask client
+	const char * buf = "OK";
+	boost::asio::async_write(socket_, boost::asio::buffer(buf, 3),
+		[this, self](boost::system::error_code const & ec, std::size_t /*bytes_transferred*/) {
+		if (!ec)
+		{
+			//printf("CACCLocationSessionNMEA::do_write::end\n");
+			do_read();
+		}
+	});
+}
+
 std::string CACCLocationSessionApp::do_format(std::string && str)
 {
 	std::string buf = str;
@@ -41,7 +56,7 @@ std::string CACCLocationSessionApp::do_format(std::string && str)
 	}
 	catch (const std::exception& e)
 	{
-		printf("CACCLocationSessionApp::do_format:\n", e.what());
+		printf("CACCLocationSessionApp::do_format:%s\n", e.what());
 		return std::string("");
 	}
 	
