@@ -38,13 +38,34 @@ bool CACCLocationConfig::load_config()
 		assert(cfg_.mq_exchange_ != "");
 		cfg_.mq_type_ = get_cfg_str_par("mq_type", "");
 		assert(cfg_.mq_type_ != "");
+		cfg_.mq_route_key_ = get_cfg_str_par("mq_route_key", "");
+
+		if (cfg_.mq_route_key_.empty())
+		{
+			// TODO:
+		}
 		//cfg_.redis_ip_ = get_cfg_str_par("redis_ip", "");
 		//assert(cfg_.redis_ip_ != "");
 		//cfg_.redis_port_ = get_cfg_int_par("redis_port", 12345);
 		//cfg_.redis_buf_queue_ = get_cfg_str_par("redis_buf_queue", "");
 		//assert(cfg_.redis_buf_queue_ != "");
 		cfg_.port_ = get_cfg_int_par("port", 12277);
-		
+		// TODO: get running flag
+		//bool running_flag = get_cfg_bool_par("running_flag", false);
+		//if (running_flag)
+		//{
+		//	std::cout << "another progress are running..." << std::endl;
+		//	exit(-1);
+		//}
+		//// TODO: set running flag must be the last
+		//set_cfg_bool_par("running_flag", true);
+		//ifs.close();
+
+		//std::ofstream ofs(path);		
+		//OStreamWrapper osw(ofs);
+		//PrettyWriter<OStreamWrapper> writer(osw);
+		//document_.Accept(writer);
+		//ofs.close();
 		return true;
 	}
 	catch (const std::exception & e)
@@ -58,6 +79,12 @@ bool CACCLocationConfig::get_cfg_bool_par(std::string const & par, bool defalut)
 {
 	std::string cfg_buf = "/" + packeage_type_ + "/" + par;
 	return Pointer(cfg_buf.c_str()).GetWithDefault(document_, defalut).GetBool();
+}
+
+void CACCLocationConfig::set_cfg_bool_par(std::string const & par, bool value)
+{
+	std::string cfg_buf = "/" + packeage_type_ + "/" + par;
+	Pointer(cfg_buf.c_str()).Set(document_, value);
 }
 
 std::size_t CACCLocationConfig::get_cfg_int_par(std::string const & par, std::size_t defalut)

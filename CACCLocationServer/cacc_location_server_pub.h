@@ -20,6 +20,8 @@ using namespace std;
 using namespace rapidjson;
 using boost::asio::ip::tcp;
 
+#include <cstddef>
+
 struct msg {
 	msg(std::size_t len, char * m):len_(len),
 		msg_(std::move(m)){}

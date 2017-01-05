@@ -161,6 +161,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="AMQPcpp.h" />
+    <ClInclude Include="base_64.hpp" />
     <ClInclude Include="cacc_location_config.h" />
     <ClInclude Include="cacc_location_server.h" />
     <ClInclude Include="cacc_location_server_pub.h" />

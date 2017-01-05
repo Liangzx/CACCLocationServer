@@ -14,8 +14,8 @@ void CACCLocationSessionApp::do_write(std::size_t length)
 {
 	auto self(shared_from_this());
 	// TODO:ask client
-	const char * buf = "OK";
-	boost::asio::async_write(socket_, boost::asio::buffer(buf, 3),
+	const char * buf = "1";
+	boost::asio::async_write(socket_, boost::asio::buffer(buf, 2),
 		[this, self](boost::system::error_code const & ec, std::size_t /*bytes_transferred*/) {
 		if (!ec)
 		{

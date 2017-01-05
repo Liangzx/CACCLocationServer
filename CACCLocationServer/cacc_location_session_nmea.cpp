@@ -50,7 +50,6 @@ std::string CACCLocationSessionNMEA::do_format(std::string && str)
 	pkg.serialize(writer);
 
 	buf = sb.GetString();
-
 	return buf;
 }
 

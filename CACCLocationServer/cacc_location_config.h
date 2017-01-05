@@ -6,6 +6,8 @@
 #include <iostream>
 #include "cacc_location_server_pub.h"
 #include "json/include/rapidjson/istreamwrapper.h"
+#include "json/include/rapidjson/ostreamwrapper.h"
+#include "json/include/rapidjson/prettywriter.h"
 
 struct ConfigInfo
 {
@@ -25,6 +27,9 @@ struct ConfigInfo
 	std::string mq_exchange_;
 	// mq type[direct/topic/fanout]
 	std::string mq_type_;
+	// mq route_key
+	std::string mq_route_key_;
+	// mq 
 	// redis ip
 	std::string redis_ip_;
 	// redis port
@@ -53,6 +58,7 @@ public:
 private:
 	bool load_config();
 	bool get_cfg_bool_par(std::string const & par, bool defalut);
+	void set_cfg_bool_par(std::string const & par, bool value);
 	std::size_t get_cfg_int_par(std::string const & par, std::size_t defalut);
 	std::string get_cfg_str_par(std::string const & par, std::string defalut);
 	rapidjson::Document document_;
