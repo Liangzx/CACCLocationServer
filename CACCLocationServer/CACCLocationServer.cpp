@@ -2,10 +2,12 @@
 #include <iostream>
 #include <thread>
 #include <queue>
+#include <cstddef>
 #include "cacc_location_server_pub.h"
 #include "cacc_location_server.h"
 #include "cacc_location_config.h"
 #include "spin_mutex.hpp"
+#include "base_64.hpp"
 #include "AMQPcpp.h"
 
 //queue for ma
@@ -31,6 +33,48 @@ void push_json_que(std::string json_str)
 //	std::cout << "mq pop size:" << que.size() << std::endl;
 //}
 
+std::string wrap_pkg(std::string const & buf, std::shared_ptr<CACCLocationServer> && server_ptr)
+{
+	rapidjson::StringBuffer sb;
+	rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
+	
+	writer.String("appId");
+	std::string app_id = "gis";
+#if RAPIDJSON_HAS_STDSTRING
+	writer.String(app_id);
+#else
+	writer.String(app_id.c_str(), static_cast<SizeType>(app_id.length()));
+#endif
+
+	writer.String("eventData");
+#if RAPIDJSON_HAS_STDSTRING
+	writer.String(buf);
+#else
+	writer.String(buf.c_str(), static_cast<SizeType>(buf.length()));
+#endif
+
+	writer.String("exchangeName");
+	//std::string exchange_name = "exchange_gis";
+	std::string exchange_name = server_ptr->config_->cfg_.mq_exchange_;
+#if RAPIDJSON_HAS_STDSTRING
+	writer.String(exchange_name);
+#else
+	writer.String(exchange_name.c_str(), static_cast<SizeType>(exchange_name.length()));
+#endif
+
+	writer.String("routeKey");
+	//std::string route_key = "CTU_LOCGIS_Position_Data";
+	std::string route_key = server_ptr->config_->cfg_.mq_route_key_;
+#if RAPIDJSON_HAS_STDSTRING
+	writer.String(route_key);
+#else
+	writer.String(route_key.c_str(), static_cast<SizeType>(route_key.length()));
+#endif
+	std::string wrp = sb.GetString();
+
+	return wrp;
+}
+
 void pkg_json_task(std::shared_ptr<CACCLocationServer> && server_ptr)
 {
 	// connect amqp
@@ -38,30 +82,34 @@ void pkg_json_task(std::shared_ptr<CACCLocationServer> && server_ptr)
 	std::string que_name = server_ptr->config_->cfg_.mq_queue_;
 	std::string que_exchange = server_ptr->config_->cfg_.mq_exchange_;
 	std::string que_type = server_ptr->config_->cfg_.mq_type_;
-	std::cout << "send msg connect server begin..." << std::endl;
 	//string conn = "cls:111111@172.18.57.208:5673//acdm";
 	AMQP amqp_produce;
 	AMQPQueue * que;
 	AMQPExchange * ex;
 	try
 	{
+		std::cout << "send msg connect server begin..." << std::endl;
 		amqp_produce.ConnectToServer(conn);
 		//
 		std::cout << "send msg connect server success..." << std::endl;
-
 		ex = amqp_produce.createExchange(que_exchange);
 
 		ex->Declare(que_exchange, que_type, AMQP_DURABLE);
 		que = amqp_produce.createQueue(que_name);
 		que->Declare(que_name, AMQP_DURABLE);
 		que->Bind(que_exchange, "CTU_LOCGIS_Position_Data");
+		ex->setHeader("Delivery-mode", 2);
+		ex->setHeader("Content-type", "text/json");
+		ex->setHeader("Content-encoding", "UTF-8");
 	}
 	catch (const AMQPException&e)
 	{
 		std::cout << e.getMessage() << std::endl;
 		return;
-	}	
+	}
+	base_64 b64;
 	std::thread::id tid = std::this_thread::get_id();
+	char base_en[4096] = { 0 };
 	while (true)
 	{
 		msg m;
@@ -72,7 +120,49 @@ void pkg_json_task(std::shared_ptr<CACCLocationServer> && server_ptr)
 			char *ptr = m.msg_;
 			std::string str(ptr, m.len_);
 			// TODO: parse packege
-			std::string json_res = server_ptr->format(str);
+			//std::string json_res = server_ptr->format(str);
+			//--
+			std::string buf = server_ptr->format(str);
+			memset(base_en, 0, sizeof(base_en));
+			b64.encode(base_en, buf.c_str(), buf.length());
+			buf = base_en;
+			rapidjson::StringBuffer sb;
+			rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
+			writer.StartObject();
+			writer.String("appId");
+			std::string app_id = "gis";
+#if RAPIDJSON_HAS_STDSTRING
+			writer.String(app_id);
+#else
+			writer.String(app_id.c_str(), static_cast<SizeType>(app_id.length()));
+#endif
+
+			writer.String("eventData");
+#if RAPIDJSON_HAS_STDSTRING
+			writer.String(buf);
+#else
+			writer.String(buf.c_str(), static_cast<SizeType>(buf.length()));
+#endif
+			writer.String("exchangeName");
+			//std::string exchange_name = "exchange_gis";
+			std::string exchange_name = server_ptr->config_->cfg_.mq_exchange_;
+#if RAPIDJSON_HAS_STDSTRING
+			writer.String(exchange_name);
+#else
+			writer.String(exchange_name.c_str(), static_cast<SizeType>(exchange_name.length()));
+#endif
+
+			writer.String("routeKey");
+			//std::string route_key = "CTU_LOCGIS_Position_Data";
+			std::string route_key = server_ptr->config_->cfg_.mq_route_key_;
+#if RAPIDJSON_HAS_STDSTRING
+			writer.String(route_key);
+#else
+			writer.String(route_key.c_str(), static_cast<SizeType>(route_key.length()));
+#endif
+			writer.EndObject();
+			std::string json_res = sb.GetString();
+			// TODO: wrap packeage
 			if (json_res.empty())
 			{
 				continue;
@@ -83,11 +173,15 @@ void pkg_json_task(std::shared_ptr<CACCLocationServer> && server_ptr)
 
 			std::lock_guard<spin_mutex> lck(sm);
 			std::cout << "[" << tid << "]:" << json_res << std::endl;
-
-			ex->setHeader("Delivery-mode", 2);
-			ex->setHeader("Content-type", "text/json");
-			ex->setHeader("Content-encoding", "UTF-8");
-			ex->Publish(json_res, "CTU_LOCGIS_Position_Data");
+			try
+			{
+				ex->Publish(json_res, "CTU_LOCGIS_Position_Data");
+			}
+			catch (const AMQPException&e)
+			{
+				std::cout << e.getMessage() << std::endl;
+			}
+			
 		}
 		else
 		{

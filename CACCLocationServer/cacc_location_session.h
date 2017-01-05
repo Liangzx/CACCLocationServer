@@ -19,6 +19,7 @@ public:
 	virtual void do_write(std::size_t length);
 	virtual void do_wait();
 protected:
+	template <typename Writer>
 	std::string until_char_;
 	data_arry data_;
 	stream_type data_s_;

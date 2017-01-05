@@ -86,6 +86,8 @@ void CACCLocationSession::do_wait()
 	}
 }
 
+
+
 std::string CACCLocationSession::do_format(std::string && str)
 {
 	std::cout << "CACCLocationSession::do_format" << std::endl;
