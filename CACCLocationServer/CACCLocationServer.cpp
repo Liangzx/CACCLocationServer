@@ -175,7 +175,7 @@ void pkg_json_task(std::shared_ptr<CACCLocationServer> && server_ptr)
 			std::cout << "[" << tid << "]:" << json_res << std::endl;
 			try
 			{
-				ex->Publish(json_res, "CTU_LOCGIS_Position_Data");
+				ex->Publish(json_res, route_key);
 			}
 			catch (const AMQPException&e)
 			{
