@@ -1,7 +1,7 @@
 CC = g++
 CPP_VERSION=-std=c++11
 CPPLAG=${CPP_VERSION}
-DLIB=-lboost_system -lboost_filesystem -lrabbitmq
+DLIB=-lboost_system -lboost_filesystem -lrabbitmq -llog4cplus 
 
 .SUFFIXES:.cpp .c
 

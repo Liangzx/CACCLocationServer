@@ -38,13 +38,15 @@ struct ConfigInfo
 	std::string redis_buf_queue_;
 	// port 报文接收端口
 	std::size_t port_;
+	//
+	std::string log_properties_;
 
 	void show()
 	{
 		std::cout << if_wait_ << ":" << queue_size_ << ":" << ":"
 			<< app_name_ << ":" << connect_type_ << ":" << mq_constr_ << ":"
-			<< redis_ip_ << ":" << redis_port_  << ":" << redis_buf_queue_  << ":"
-			<< port_ << std::endl;
+			<< mq_queue_ << ":" << mq_exchange_ << ":" << mq_type_ << ":"
+			<< mq_route_key_ << ":" << port_ << std::endl;
 	}
 };
 

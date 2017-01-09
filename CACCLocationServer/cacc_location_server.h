@@ -50,6 +50,7 @@ public:
 
 	std::function<std::string(std::string)> format;
 	std::shared_ptr<CACCLocationConfig> config_;
+	log4cplus::Logger logger_;
 	void set_config(std::shared_ptr<CACCLocationConfig> && cfg);
 private:
 	void do_accept();	

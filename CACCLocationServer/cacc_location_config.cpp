@@ -66,6 +66,8 @@ bool CACCLocationConfig::load_config()
 		//PrettyWriter<OStreamWrapper> writer(osw);
 		//document_.Accept(writer);
 		//ofs.close();
+		cfg_.log_properties_ = get_cfg_str_par("log_properties", "");
+		assert(cfg_.log_properties_ != "");
 		return true;
 	}
 	catch (const std::exception & e)

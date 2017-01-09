@@ -45,7 +45,7 @@ std::string CACCLocationSessionNMEA::do_format(std::string && str)
 	pkg.speed_ = boost::lexical_cast<double>(split_vec[14]);
 	pkg.direction_ = boost::lexical_cast<double>(split_vec[15]);
 	pkg.object_id_ = split_vec[16];
-
+	pkg.obj_type_ = 2;
 	rapidjson::StringBuffer sb;
 	rapidjson::Writer<rapidjson::StringBuffer> writer(sb);
 	pkg.serialize(writer);

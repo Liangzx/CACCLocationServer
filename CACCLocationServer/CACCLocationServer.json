@@ -3,26 +3,28 @@
     "app_name": "CACCLocationServer",
     "connect_type": "persistent_connection",
     "mq_constr": "gis:111111@172.18.57.208:5673//acdm",
-    "mq_queue": "Q_gis_CTU_LOCGIS_Position_Data",
+    "mq_queue": "Q_gis_Gis_Protocol_RealTimeData_A",
     "mq_exchange": "exchange_gis",
     "mq_type": "topic",
-    "mq_route_key": "CTU_LOCGIS_Position_Data",
+    "mq_route_key": "Gis_Protocol_RealTimeData_A",
     "queue_size": 4096,
     "if_wait": false,
     "port": 12277,
-    "running_flag": false
+    "running_flag": false,
+    "log_properties":"/data/cxx/config/CACCLocationServerLogNema.properties"
   },
   "app": {
     "app_name": "CACCLocationServer",
     "connect_type": "persistent_connection",
-    "mq_constr": "adfddf",
-    "mq_queue": "CTU_LOCGIS_Position_Data",
+    "mq_constr": "gis:111111@172.18.57.208:5673//acdm",
+    "mq_queue": "Gis_Protocol_RealTimeData_A",
     "mq_exchange": "exchange_gis",
     "mq_type": "topic",
-    "mq_route_key": "CTU_LOCGIS_Position_Data",
+    "mq_route_key": "Gis_Protocol_RealTimeData_A",
     "queue_size": 4096,
     "if_wait": false,
     "port": 12278,
-    "running_flag": false
+    "running_flag": false,
+    "log_properties":"/data/cxx/config/CACCLocationServerLogApp.properties"
   }
 }

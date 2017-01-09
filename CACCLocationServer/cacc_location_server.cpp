@@ -7,7 +7,7 @@ CACCLocationServer::CACCLocationServer(boost::asio::io_service & io_service,
 	tcp::endpoint const & endpoint, std::size_t que_buf)
 	:acceptor_(io_service, endpoint),socket_(io_service),
 	lck_free_queue_(que_buf),
-	capacity_(que_buf)
+	capacity_(que_buf), logger_(log4cplus::Logger::getInstance(LOG4CPLUS_TEXT("log")))
 {
 	que_size_ = 0;
 }
@@ -19,6 +19,7 @@ CACCLocationServer::~CACCLocationServer()
 
 void CACCLocationServer::start()
 {
+	LOG4CPLUS_TRACE(logger_, LOG4CPLUS_TEXT("server begin..."));
 	do_accept();
 }
 
@@ -51,4 +52,5 @@ void CACCLocationServer::do_accept()
 void CACCLocationServer::set_config(std::shared_ptr<CACCLocationConfig> && cfg)
 {
 	this->config_ = std::move(cfg);
+	log4cplus::PropertyConfigurator::doConfigure(LOG4CPLUS_TEXT("/data/cxx/config/CACCLocationServerLogNema.properties"));
 }

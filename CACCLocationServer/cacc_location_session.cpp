@@ -42,6 +42,7 @@ void CACCLocationSession::do_read()
 				std::istream is(&data_s_);
 				std::string line;
 				std::getline(is, line);
+				LOG4CPLUS_TRACE(ser_ptr_->logger_, ("[SRC]" + line).c_str());
 
 				char *ptr = (char *)malloc(line.length());
 				memcpy(ptr, line.c_str(), line.length());
@@ -85,8 +86,6 @@ void CACCLocationSession::do_wait()
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
 }
-
-
 
 std::string CACCLocationSession::do_format(std::string && str)
 {

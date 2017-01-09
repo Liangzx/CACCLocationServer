@@ -47,6 +47,7 @@ std::string CACCLocationSessionApp::do_format(std::string && str)
 		pkg.longitude_ = boost::lexical_cast<double>(split_vec[3]);
 		pkg.altitude_ = boost::lexical_cast<double>(split_vec[4]);
 		pkg.object_id_ = split_vec[5];
+		pkg.obj_type_ = 1;
 		pkg.rssi_ = boost::lexical_cast<int>(split_vec[6]);
 		pkg.lac_ = boost::lexical_cast<int>(split_vec[7]);
 		pkg.ci_ = boost::lexical_cast<int>(split_vec[8]);

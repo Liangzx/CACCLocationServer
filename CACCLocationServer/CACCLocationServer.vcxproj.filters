@@ -89,6 +89,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="CACCLocationServer.json" />
+    <None Include="CACCLocationServerLogNema.properties" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="makefile" />

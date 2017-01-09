@@ -15,6 +15,10 @@
 #include "json/include/rapidjson/document.h"
 #include "json/include/rapidjson/pointer.h"
 #include "cacc_location_config.h"
+#include <log4cplus/logger.h>
+#include <log4cplus/configurator.h>
+#include <log4cplus/helpers/stringhelper.h>
+#include <log4cplus/loggingmacros.h>
 
 using namespace std;
 using namespace rapidjson;
@@ -52,6 +56,7 @@ struct RecvPkg {
 	double	direction_;				// 方向
 	std::string time_stamp_;		// 报文时间戳
 	std::string object_id_;			// id 车载设备/app
+	std::size_t obj_type_;
 
 	void clear()
 	{
@@ -74,6 +79,7 @@ struct RecvPkg {
 		rssi_ = 0;
 		lac_ = 0;
 		ci_ = 0;
+		obj_type_ = 0;
 	}
 
 	template<typename Writer>
@@ -89,6 +95,8 @@ struct RecvPkg {
 		writer.String(object_id_.c_str(), static_cast<SizeType>(object_id_.length()));
 #endif
 		//writer.String("time_stamp");
+		writer.String("objType");
+		writer.Int(obj_type_);
 		writer.String("recordTime");
 #if RAPIDJSON_HAS_STDSTRING
 		writer.String(time_stamp_);
