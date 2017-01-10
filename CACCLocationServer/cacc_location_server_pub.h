@@ -88,7 +88,7 @@ struct RecvPkg {
 		writer.StartObject();
 
 		//writer.String("object_id");
-		writer.String("userId");
+		writer.String("objId");
 #if RAPIDJSON_HAS_STDSTRING
 		writer.String(object_id_);
 #else

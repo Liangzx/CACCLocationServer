@@ -54,11 +54,24 @@ void msg_to_mq(std::shared_ptr<CACCLocationServer> && server_ptr)
 		catch (const AMQPException&e)
 		{
 			//std::cout << e.getMessage() << std::endl;
+			amqp_produce.closeChannel();
+			amqp_produce.closeChannel();
 			LOG4CPLUS_FATAL(server_ptr->logger_, e.getMessage().c_str());
+			// TODO:deal queue
+			std::unique_lock<spin_mutex> lock(sm);
+			const std::size_t que_size = que.size();
+			lock.unlock();
+			if (que_size > 4096)
+			{
+				for (size_t i = 0; i < que_size; i++)
+				{
+					que.pop();
+				}
+			}
 			std::this_thread::sleep_for(std::chrono::seconds(5));
 			continue;
 		}
-		//
+		
 		std::unique_lock<spin_mutex> lock(sm);
 		const std::size_t que_size = que.size();
 		lock.unlock();
@@ -69,14 +82,20 @@ void msg_to_mq(std::shared_ptr<CACCLocationServer> && server_ptr)
 			try
 			{
 				ex->Publish(json_res, route_key);
+				//std::cout << json_res << std::endl;
+				
 			}
 			catch (const AMQPException&e)
 			{
 				LOG4CPLUS_ERROR(server_ptr->logger_, e.getMessage().c_str());
+				// TODO:save record
 				continue;
 			}
 			
-		}		
+		}
+		//std::cout << que.size() << std::endl;
+		amqp_produce.closeChannel();
+		amqp_produce.closeChannel();
 		std::this_thread::sleep_for(std::chrono::seconds(1));
 	}
 }
@@ -142,6 +161,7 @@ void pkg_json_task(std::shared_ptr<CACCLocationServer> && server_ptr)
 			}
 			//TODO: push mq queue
 			push_json_que(json_res);
+
 			LOG4CPLUS_INFO(server_ptr->logger_, ("[DES]" + json_res).c_str());
 		}
 		else

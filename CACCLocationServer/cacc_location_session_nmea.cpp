@@ -29,7 +29,11 @@ std::string CACCLocationSessionNMEA::do_format(std::string && str)
 
 	RecvPkg pkg;
 	//
-	pkg.time_stamp_ = split_vec[1];
+	if (pkg.time_stamp_.length() >= 14)
+	{
+		pkg.time_stamp_ = split_vec[1].substr(0, split_vec[1].length() - 3);
+		boost::replace_all(pkg.time_stamp_, "T", "");
+	}	
 	pkg.latitude_ = boost::lexical_cast<double>(split_vec[2]);
 	pkg.longitude_ = boost::lexical_cast<double>(split_vec[3]);
 	pkg.altitude_ = boost::lexical_cast<double>(split_vec[4]);
